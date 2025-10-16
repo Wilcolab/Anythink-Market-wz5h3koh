@@ -1,51 +1,39 @@
-# GitHub Copilot Workshop
+# Python Server
 
-## Enhance a Node Calculator app using GitHub Copilot
+This project contains a FastAPI server implemented in Python. It provides two routes for managing a task list.
 
-<img width="400" alt="Node Calculator image" src="./assets/Node%20calculator%20image.png">
+## Project Structure
 
-The project contains a simple node.js application that exposes REST APIs to perform arithmetic on integers, and provides a test suite with mocha and chai.
+The project has the following files and directories:
 
-## Instructions
+- `python-server/src/main.py`: This file contains the implementation of the FastAPI server with two routes. It handles adding a task to a list and retrieving the list.
 
-### Development
-In order to run the app use `npm start`
+- `python-server/src/__init__.py`: This file is an empty file that marks the `src` directory as a Python package.
 
-### Production
-To run in production mode: `npm run prod`
+- `python-server/requirements.txt`: This file lists the dependencies required for the FastAPI server and other dependencies.
 
-### Testing
-Run tests with `npm test`
+- `python-server/Dockerfile`: This file is used to build a Docker image for the FastAPI server. It specifies the base image, copies the source code into the image, installs the dependencies, and sets the command to run the server.
 
-### Docker
-Build the Docker image: `docker build -t calculator-app .`
-Run the container: `docker run -p 3000:3000 calculator-app`
+- `docker-compose.yml`: This file is used to define and run multi-container Docker applications. It specifies the services to run, their configurations, and any dependencies between them.
 
-## API Endpoints
+## Getting Started
 
-- `GET /arithmetic?operation=add&operand1=1&operand2=2` - Perform arithmetic operations
-- `GET /history?limit=10&offset=0` - Get calculation history
-- `DELETE /history` - Clear calculation history
+To run the FastAPI server using Docker, follow these steps:
 
-## Supported Operations
+- Build and start the Docker containers by running the following command:
 
-### Binary Operations (require operand1 and operand2):
-- `add`, `subtract`, `multiply`, `divide`, `power`
+  ```shell
+  docker compose up
+  ```
 
-### Unary Operations (require only operand1):
-- `sin`, `cos`, `tan` - Trigonometric functions (input in degrees)
-- `log` - Base-10 logarithm
-- `ln` - Natural logarithm
-- `sqrt` - Square root
-- `factorial` - Factorial (requires non-negative integer)
+  This command will build the Docker image for the FastAPI server and start the containers defined in the `docker-compose.yml` file.
 
-## Deployment
+- The FastAPI server should now be running. You can access at port `8000`.
 
-The application is containerized with Docker and ready for deployment to any container platform.
+## API Routes
 
-## Acknowledgements
+The FastAPI server provides the following API routes:
 
-A special thanks to the following awesome Hubbers who have contributed in many different ways to this repository.
-[pierluigi](https://github.com/pierluigi), [parroty](https://github.com/yuichielectric), [yuichielectric](https://github.com/yuichielectric), [dchomh](https://github.com/dchomh), [nolecram](https://github.com/nolecram), [rsymo](https://github.com/rsymo), [damovisa](https://github.com/damovisa) and anyone else I've inadvertently missed.
+- `POST /tasks`: Adds a task to the task list. The request body should contain the task details.
 
-_v1.0 Released June, 2023_
+- `GET /tasks`: Retrieves the task list.
