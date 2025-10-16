@@ -184,3 +184,48 @@ BODY {
     background-color: #d5d5d5;
     margin: 4px;
 }
+
+/* History styles */
+#history {
+    background-color: #f0f0f0;
+    border: 2px solid #333;
+    padding: 10px;
+    border-radius: 5px;
+    max-width: 300px;
+    margin: 20px auto;
+}
+
+#history h3 {
+    margin-top: 0;
+    color: #333;
+}
+
+#history-list ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+#history-list li {
+    padding: 5px 0;
+    border-bottom: 1px solid #ccc;
+    font-family: monospace;
+}
+
+#history-list small {
+    color: #666;
+    font-size: 0.8em;
+}
+
+#history button {
+    margin: 5px;
+    padding: 5px 10px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+#history button:hover {
+    background-color: #45a049;
+}

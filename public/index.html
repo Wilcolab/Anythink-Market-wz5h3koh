@@ -44,9 +44,25 @@
              <!-- add a button for a power (or exponential) function -->
             <button class="btn" onClick="operationPressed('^')">^</button>
 
+            <button class="btn" onClick="operationPressed('sin')">sin</button>
+            <button class="btn" onClick="operationPressed('cos')">cos</button>
+            <button class="btn" onClick="operationPressed('tan')">tan</button>
+            <button class="btn" onClick="operationPressed('log')">log</button>
+
+            <button class="btn" onClick="operationPressed('ln')">ln</button>
+            <button class="btn" onClick="operationPressed('sqrt')">√</button>
+            <button class="btn" onClick="operationPressed('fact')">n!</button>
+            <button class="btn" onClick="showHistory()">Hist</button>
+
           </div>
         </div>
       </div>
-    </div>
+
+      <div id="history" style="display:none; margin-top: 20px;">
+        <h3>Calculation History</h3>
+        <div id="history-list"></div>
+        <button onClick="clearHistory()">Clear History</button>
+        <button onClick="hideHistory()">Close</button>
+      </div>
   </body>
 </html>

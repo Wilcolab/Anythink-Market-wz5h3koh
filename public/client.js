@@ -35,14 +35,40 @@ function calculate(operand1, operand2, operation) {
             break;
         case '^':
             uri += "?operation=power";
-            break;  
+            break;
+        case 'sin':
+            uri += "?operation=sin";
+            break;
+        case 'cos':
+            uri += "?operation=cos";
+            break;
+        case 'tan':
+            uri += "?operation=tan";
+            break;
+        case 'log':
+            uri += "?operation=log";
+            break;
+        case 'ln':
+            uri += "?operation=ln";
+            break;
+        case 'sqrt':
+            uri += "?operation=sqrt";
+            break;
+        case 'fact':
+            uri += "?operation=factorial";
+            break;
         default:
             setError();
             return;
     }
 
     uri += "&operand1=" + encodeURIComponent(operand1);
-    uri += "&operand2=" + encodeURIComponent(operand2);
+
+    // Only add operand2 for binary operations
+    var unaryOps = ['sin', 'cos', 'tan', 'log', 'ln', 'sqrt', 'fact'];
+    if (!unaryOps.includes(operation)) {
+        uri += "&operand2=" + encodeURIComponent(operand2);
+    }
 
     setLoading(true);
 
@@ -120,6 +146,16 @@ function operationPressed(op) {
 }
 
 function equalPressed() {
+    var unaryOps = ['sin', 'cos', 'tan', 'log', 'ln', 'sqrt', 'fact'];
+
+    if (unaryOps.includes(operation)) {
+        // Unary operation - only need operand1
+        operand1 = getValue();
+        state = states.complete;
+        calculate(operand1, null, operation);
+        return;
+    }
+
     if (state < states.operand2) {
         state = states.complete;
         return;
@@ -200,4 +236,43 @@ function setLoading(loading) {
     for (var i = 0; i < buttons.length; i++) {
         buttons[i].disabled = loading;
     }
+}
+
+function showHistory() {
+    var historyDiv = document.getElementById('history');
+    var historyList = document.getElementById('history-list');
+
+    var http = new XMLHttpRequest();
+    http.open("GET", location.origin + "/history?limit=20", true);
+    http.onload = function () {
+        if (http.status == 200) {
+            var response = JSON.parse(http.responseText);
+            var html = '<ul>';
+            response.history.forEach(function(item) {
+                var op = item.operand2 !== null ? 
+                    item.operand1 + ' ' + item.operation + ' ' + item.operand2 : 
+                    item.operation + '(' + item.operand1 + ')';
+                html += '<li>' + op + ' = ' + item.result + ' <small>(' + new Date(item.timestamp).toLocaleString() + ')</small></li>';
+            });
+            html += '</ul>';
+            historyList.innerHTML = html;
+            historyDiv.style.display = 'block';
+        }
+    };
+    http.send(null);
+}
+
+function hideHistory() {
+    document.getElementById('history').style.display = 'none';
+}
+
+function clearHistory() {
+    var http = new XMLHttpRequest();
+    http.open("DELETE", location.origin + "/history", true);
+    http.onload = function () {
+        if (http.status == 200) {
+            document.getElementById('history-list').innerHTML = '<p>History cleared</p>';
+        }
+    };
+    http.send(null);
 }

@@ -24,7 +24,20 @@ Run the container: `docker run -p 3000:3000 calculator-app`
 ## API Endpoints
 
 - `GET /arithmetic?operation=add&operand1=1&operand2=2` - Perform arithmetic operations
-- Supported operations: add, subtract, multiply, divide, power
+- `GET /history?limit=10&offset=0` - Get calculation history
+- `DELETE /history` - Clear calculation history
+
+## Supported Operations
+
+### Binary Operations (require operand1 and operand2):
+- `add`, `subtract`, `multiply`, `divide`, `power`
+
+### Unary Operations (require only operand1):
+- `sin`, `cos`, `tan` - Trigonometric functions (input in degrees)
+- `log` - Base-10 logarithm
+- `ln` - Natural logarithm
+- `sqrt` - Square root
+- `factorial` - Factorial (requires non-negative integer)
 
 ## Deployment
 
