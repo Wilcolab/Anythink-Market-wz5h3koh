@@ -13,7 +13,6 @@ jobs:
       postgres:
         image: postgres:13
         env:
-          POSTGRES_USER: root
           POSTGRES_PASSWORD: postgres
           SECRET_KEY: secret
           POSTGRES_DB: anythink-market
@@ -41,18 +40,6 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: "16"
-
-      - name: Install Docker Compose
-        run: |
-          sudo curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-          sudo chmod +x /usr/local/bin/docker-compose
-          docker-compose --version
-
-      - name: Start application servers
-        run: docker-compose up -d
-
-      - name: Wait for servers to be ready
-        run: sleep 10
 
       - name: Wilco checks
         id: Wilco
