@@ -94,7 +94,52 @@ describe('Arithmetic', function () {
     });
 
 // TODO: Challenge #1
- 
+describe('Power Function', function () {
+    it('calculates power of a positive integer', function (done) {
+        request.get('/arithmetic?operation=power&operand1=2&operand2=3')
+            .expect(200)
+            .end(function (err, res) {
+                expect(res.body).to.eql({ result: 8 });
+                done();
+            });
+    });
+
+    it('calculates power of zero', function (done) {
+        request.get('/arithmetic?operation=power&operand1=0&operand2=5')
+            .expect(200)
+            .end(function (err, res) {
+                expect(res.body).to.eql({ result: 0 });
+                done();
+            });
+    });
+
+    it('calculates power of a negative base', function (done) {
+        request.get('/arithmetic?operation=power&operand1=-2&operand2=3')
+            .expect(200)
+            .end(function (err, res) {
+                expect(res.body).to.eql({ result: -8 });
+                done();
+            });
+    });
+
+    it('calculates power with a fractional exponent', function (done) {
+        request.get('/arithmetic?operation=power&operand1=4&operand2=0.5')
+            .expect(200)
+            .end(function (err, res) {
+                expect(res.body).to.eql({ result: 2 });
+                done();
+            });
+    });
+
+    it('rejects negative exponent for zero base', function (done) {
+        request.get('/arithmetic?operation=power&operand1=0&operand2=-1')
+            .expect(400)
+            .end(function (err, res) {
+                expect(res.body).to.eql({ error: "Undefined result for 0 raised to a negative power" });
+                done();
+            });
+    });
+});
 
     describe('Multiplication', function () {
         it('multiplies two positive integers', function (done) {
