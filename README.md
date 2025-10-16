@@ -1,39 +1,110 @@
-# Python Server
+````markdown
+# Anythink Market
 
-This project contains a FastAPI server implemented in Python. It provides two routes for managing a task list.
+This project contains both a Python FastAPI server and a Node.js Express server for managing a task list. The endpoints have been migrated from Python to Node.js.
 
 ## Project Structure
 
-The project has the following files and directories:
+The project has the following directories and files:
 
-- `python-server/src/main.py`: This file contains the implementation of the FastAPI server with two routes. It handles adding a task to a list and retrieving the list.
+### Node.js Express Server (Primary)
+- `my-express-server/src/app.js`: Main Express server implementation with all migrated endpoints
+- `my-express-server/package.json`: Node.js dependencies and scripts
+- `my-express-server/Dockerfile`: Docker configuration for the Express server
+- `my-express-server/README.md`: Detailed Node.js server documentation
 
-- `python-server/src/__init__.py`: This file is an empty file that marks the `src` directory as a Python package.
+### Python FastAPI Server (Legacy)
+- `python-server/src/main.py`: Original FastAPI server implementation
+- `python-server/src/__init__.py`: Python package marker
+- `python-server/requirements.txt`: Python dependencies
+- `python-server/Dockerfile`: Docker configuration for the FastAPI server
 
-- `python-server/requirements.txt`: This file lists the dependencies required for the FastAPI server and other dependencies.
-
-- `python-server/Dockerfile`: This file is used to build a Docker image for the FastAPI server. It specifies the base image, copies the source code into the image, installs the dependencies, and sets the command to run the server.
-
-- `docker-compose.yml`: This file is used to define and run multi-container Docker applications. It specifies the services to run, their configurations, and any dependencies between them.
+### Configuration
+- `docker-compose.yml`: Multi-container Docker configuration for running both servers
 
 ## Getting Started
 
-To run the FastAPI server using Docker, follow these steps:
+### Running the Node.js Server
 
-- Build and start the Docker containers by running the following command:
+#### Using Docker Compose
+```shell
+docker compose up
+```
 
-  ```shell
-  docker compose up
-  ```
+The Node.js server will be available at http://localhost:8001
 
-  This command will build the Docker image for the FastAPI server and start the containers defined in the `docker-compose.yml` file.
+#### Running Locally
+```shell
+cd my-express-server
+npm install
+npm start
+```
 
-- The FastAPI server should now be running. You can access at port `8000`.
+### Running the Python Server (Legacy)
+```shell
+docker compose up python-server
+```
+
+The Python server will be available at http://localhost:8000
 
 ## API Routes
 
-The FastAPI server provides the following API routes:
+Both servers provide the following API routes:
 
-- `POST /tasks`: Adds a task to the task list. The request body should contain the task details.
+### GET `/`
+Returns a "Hello World" message.
 
-- `GET /tasks`: Retrieves the task list.
+**Response:**
+```
+Hello World
+```
+
+### GET `/tasks`
+Retrieves the complete task list.
+
+**Response:**
+```json
+{
+  "tasks": [
+    "Write a diary entry from the future",
+    "Create a time machine from a cardboard box",
+    "Plan a trip to the dinosaurs",
+    "Draw a futuristic city",
+    "List items to bring on a time-travel adventure"
+  ]
+}
+```
+
+### POST `/tasks`
+Adds a new task to the task list.
+
+**Request Body:**
+```json
+{
+  "text": "Your task description here"
+}
+```
+
+**Response:**
+```json
+{
+  "message": "Task added successfully"
+}
+```
+
+## Migration Details
+
+The endpoints have been successfully migrated from Python FastAPI to Node.js Express:
+
+- ✅ All routes maintain the same paths and functionality
+- ✅ Request/response formats are identical
+- ✅ Initial task data is preserved
+- ✅ Both servers run on their respective ports (Node.js: 8001, Python: 8000)
+- ✅ Full feature parity achieved
+
+**Dependencies:**
+- Express.js for routing
+- body-parser for JSON request parsing
+- nodemon for development auto-reload
+
+````
