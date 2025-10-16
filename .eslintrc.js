@@ -3,10 +3,16 @@ module.exports = {
         "browser": true,
         "es2021": true,
         "mocha": true,
-        "request": true
+        "node": true
     },
     "extends": "eslint:recommended",
     "overrides": [
+        {
+            "files": ["test/**/*.js"],
+            "env": {
+                "mocha": true
+            }
+        }
     ],
     "parserOptions": {
         "ecmaVersion": "latest",

@@ -205,4 +205,125 @@ describe('Arithmetic', function () {
                 });
         });
     });
+
+    describe('Trigonometric Functions', function () {
+        it('calculates sine of 30 degrees', function (done) {
+            request.get('/arithmetic?operation=sin&operand1=30')
+                .expect(200)
+                .end(function (err, res) {
+                    expect(res.body.result).to.be.closeTo(0.5, 0.0001);
+                    done();
+                });
+        });
+
+        it('calculates cosine of 60 degrees', function (done) {
+            request.get('/arithmetic?operation=cos&operand1=60')
+                .expect(200)
+                .end(function (err, res) {
+                    expect(res.body.result).to.be.closeTo(0.5, 0.0001);
+                    done();
+                });
+        });
+
+        it('calculates tangent of 45 degrees', function (done) {
+            request.get('/arithmetic?operation=tan&operand1=45')
+                .expect(200)
+                .end(function (err, res) {
+                    expect(res.body.result).to.be.closeTo(1.0, 0.0001);
+                    done();
+                });
+        });
+    });
+
+    describe('Logarithmic Functions', function () {
+        it('calculates logarithm base 10 of 100', function (done) {
+            request.get('/arithmetic?operation=log&operand1=100')
+                .expect(200)
+                .end(function (err, res) {
+                    expect(res.body.result).to.equal(2);
+                    done();
+                });
+        });
+
+        it('calculates natural logarithm of e', function (done) {
+            request.get('/arithmetic?operation=ln&operand1=2.718281828')
+                .expect(200)
+                .end(function (err, res) {
+                    expect(res.body.result).to.be.closeTo(1.0, 0.0001);
+                    done();
+                });
+        });
+    });
+
+    describe('Other Functions', function () {
+        it('calculates square root of 16', function (done) {
+            request.get('/arithmetic?operation=sqrt&operand1=16')
+                .expect(200)
+                .end(function (err, res) {
+                    expect(res.body.result).to.equal(4);
+                    done();
+                });
+        });
+
+        it('calculates factorial of 5', function (done) {
+            request.get('/arithmetic?operation=factorial&operand1=5')
+                .expect(200)
+                .end(function (err, res) {
+                    expect(res.body.result).to.equal(120);
+                    done();
+                });
+        });
+
+        it('rejects factorial of negative number', function (done) {
+            request.get('/arithmetic?operation=factorial&operand1=-1')
+                .expect(400)
+                .end(function (err, res) {
+                    expect(res.body.error).to.include("Factorial requires non-negative integer");
+                    done();
+                });
+        });
+
+        it('rejects factorial of non-integer', function (done) {
+            request.get('/arithmetic?operation=factorial&operand1=2.5')
+                .expect(400)
+                .end(function (err, res) {
+                    expect(res.body.error).to.include("Factorial requires non-negative integer");
+                    done();
+                });
+        });
+    });
+
+    describe('History', function () {
+        it('retrieves calculation history', function (done) {
+            // First make a calculation
+            request.get('/arithmetic?operation=add&operand1=10&operand2=5')
+                .expect(200)
+                .end(function (err, res) {
+                    // Then get history
+                    request.get('/history')
+                        .expect(200)
+                        .end(function (err, res) {
+                            expect(res.body).to.have.property('history');
+                            expect(res.body).to.have.property('total');
+                            expect(res.body.history).to.be.an('array');
+                            if (res.body.history.length > 0) {
+                                expect(res.body.history[0]).to.have.property('operation', 'add');
+                                expect(res.body.history[0]).to.have.property('operand1', '10');
+                                expect(res.body.history[0]).to.have.property('operand2', '5');
+                                expect(res.body.history[0]).to.have.property('result', 15);
+                            }
+                            done();
+                        });
+                });
+        });
+
+        it('clears calculation history', function (done) {
+            request.delete('/history')
+                .expect(200)
+                .end(function (err, res) {
+                    expect(res.body.message).to.equal("History cleared successfully");
+                    done();
+                });
+        });
+    });
 });
